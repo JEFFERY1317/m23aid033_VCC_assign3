@@ -1,0 +1,37 @@
+
+sudo apt update && sudo apt upgrade -y
+
+# Installed dependencies
+sudo apt install -y prometheus prometheus-node-exporter python3-pip docker.io docker-compose
+sudo systemctl enable docker
+sudo systemctl start docker
+
+# Installed Python packages
+sudo pip3 install prometheus-client psutil requests google-api-python-client
+
+# Created monitoring directory
+sudo mkdir -p /opt/monitoring
+
+
+# Created log file
+sudo touch /var/log/resource_monitor.log
+sudo chmod 644 /var/log/resource_monitor.log
+
+# Updated Prometheus configuration
+sudo cp prometheus.yml /etc/prometheus/prometheus.yml
+sudo systemctl restart prometheus
+
+# Enabled and started monitoring service
+sudo systemctl daemon-reload
+sudo systemctl enable resource-monitor
+sudo systemctl start resource-monitor
+
+# Deployed sample application
+mkdir -p ~/sample-app
+cp docker-compose.yml ~/sample-app/
+cp Dockerfile ~/sample-app/
+cp requirements.txt ~/sample-app/
+cp app.py ~/sample-app/
+
+cd ~/sample-app
+sudo docker-compose up -d
