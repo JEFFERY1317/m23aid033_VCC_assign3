@@ -1,0 +1,7 @@
+# Generated CPU load to trigger auto-scaling
+echo "Generating CPU load to test auto-scaling..."
+stress-ng --cpu 2 --timeout 300s &
+
+# Monitored resource usage and auto-scaling
+echo "Monitoring auto-scaling process..."
+sudo tail -f /var/log/resource_monitor.log
